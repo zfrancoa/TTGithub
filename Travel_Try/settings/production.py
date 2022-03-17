@@ -12,7 +12,7 @@ from decouple import config
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ["127.0.0.1", ".herokuapp.com", "traveltry.com.ar", "www.traveltry.com.ar",]
+ALLOWED_HOSTS = ["127.0.0.1", "rocky-stream-90067.herokuapp.com",".herokuapp.com", "traveltry.com.ar", "www.traveltry.com.ar",]
 
 
 ###-----------------#####
