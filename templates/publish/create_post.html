@@ -1,0 +1,50 @@
+<!--ACA SE CREARA UNA PUBLICACION-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+
+{% block title %} Create Post {% endblock %}
+
+
+{% load crispy_forms_tags %}
+
+
+
+{% block cssfiles %}
+{% endblock cssfiles %} 
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="container mt-4">
+            <div class="row justify-content-center">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <a href="{% url 'home'%}" class="link-primary">Click here to Home.</a><!--ENLACE PARA CERRAR SESIÓN-->
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <!--utilizar multipart/form-datacuando su formulario incluya <input type="file">elementos, o sea un archivo, en este caso una imagen es un archivo por eos lo usamos-->
+                    <form method="POST" enctype="multipart/form-data">
+                    
+                        <!-- Security token -->
+                        {% csrf_token %}
+                    
+                        <!-- Using the formset -->
+                        <fieldset class="form-group"><br>
+                            {{ form|crispy }}
+                        </fieldset>
+                        <button type="submit" class="btn btn-success form-control-file">Publish</button>
+
+                    </form>
+                </div>
+            </div>
+    {% endif %} 
+{% endblock %}
+
+
+{% block jsfiles %}
+{% endblock jsfiles %}
+
+
+

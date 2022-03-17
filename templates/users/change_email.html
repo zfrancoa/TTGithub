@@ -1,0 +1,61 @@
+<!--ACA SE cambiara el email-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+
+{% block title %} Change Email {% endblock %}
+
+{% load static %}
+
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+<link rel="stylesheet" href="{% static 'css/header.css' %}" type="text/css" />
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+
+    <div class="fixed-top d-flex flex-row justify-content-start border-bottom">
+                                
+        <div class="p-2">
+            <a href="{% url 'about' %}" class="link_icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+            </a>
+        </div>
+
+
+        <div class="p-2 ml-5" style="color: black; font-size: 20px;">
+            Change email
+        </div>
+        
+
+    
+    </div>
+
+    <br><br>
+
+
+    <div class="p-2 mt-5">
+        <h2>Cambiar Email</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">Change</button>
+        </form> 
+    </div>
+      
+    
+
+{% endblock %}
+
+
+{% block jsfiles %}
+{% endblock jsfiles %}

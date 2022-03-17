@@ -1,0 +1,225 @@
+<!--Lista de followers del usuario logeado-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+
+{% block title %} followers List {% endblock %}
+
+{% load static %}
+
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+    
+    <link rel="stylesheet" href="{% static 'css/followers_list.css' %}" type="text/css" />
+
+{% endblock cssfiles %} 
+
+
+
+
+{% block content %}
+
+
+
+    <div class="fixed-top d-flex flex-row justify-content-start border-bottom">
+        <div class="p-2">
+            {% if request.user == owner %}
+                <a href="{% url 'myprofile' %}" class="link_icons">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                    </svg>
+                </a>
+            {% else %}
+                <a href="{% url 'user_profile' owner %}" class="link_icons">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                    </svg>
+                </a>
+            {% endif %}
+        </div>
+
+
+        <div class="p-2 ml-5" style="color: black; font-size: 20px;">
+            Followers
+        </div>
+        
+
+    </div>
+
+    <br><br>
+
+    {% if followers %}<!--ENTRA SOLO SI HAY USUARIOS QUE RECOMENDAR-->
+    
+        {% for follower in followers %}<!--Recorremos los usuarios que nos recomiendan para seguir-->   
+        
+            <div class="w-100 mt-4" id="MyFollower{{ follower.user_id }}">
+                <div class="d-flex flex-row justify-content-between">
+                    <a href="{% url 'user_profile' follower %}" class="link_icons">
+                        <div class="d-flex flex-row justify-content-start p-2">
+                            <div class="">
+                                <img src="{{ follower.photo.url }}" class="rounded-circle" width="45" height="45">  
+                            </div>
+                            <div class="ml-3 mt-1">
+                                <span id="span_name">{{follower}}</span>
+                                {% if follower.bio %}
+                                    <br>
+                                    <span id="span_bio">{{follower.bio}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    
+                    {% if not request.user.profile == follower %}
+                        {% if follower.user in follow_sent %}<!--ENTRAMOS A ESTE IF SI A EL USUARIO AUN NO LE HEMOS ENVIADO LA SOLICITUD-->
+                            <!--SI AL USUARIO LE ENVIAMOS LA SOLICITUD, ENTRARA ACA CON EL FIN DE QUE PODAMOS CANCELARLA-->
+                            <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                <div class="mt-1 mr-2">
+                                    <a href="{% url 'send_or_delete_follower_request' %}" class="botton_request cancel_request" id='{{ follower.user_id }}'>
+                                        <button class="btn btn-warning">Cancel</button>
+                                    </a>
+                                </div>
+                                {% if request.user == owner %}
+                                    <div class="mt-2">
+                                        <a href="{% url 'delete_follower' %}" class="link_icons Trigger" id="del{{ follower.user_id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                {% endif %} 
+                            </div>
+                        {% else %}
+                        
+                            {% if follower in me_followings %}
+                                <!--SI AL USUARIO LE ENVIAMOS LA SOLICITUD, ENTRARA ACA CON EL FIN DE QUE PODAMOS CANCELARLA-->
+                                <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                    <div class="mt-1 mr-2">
+                                        <a href="{% url 'delete_following' %}" class="botton_request unfollow" id='{{ follower.user_id }}'>
+                                            <button class="btn btn-warning">Following</button>
+                                        </a>
+                                    </div>
+                                    {% if request.user == owner%}
+                                        <div class="mt-2">
+                                            <a href="{% url 'delete_follower' %}" class="link_icons Trigger" id="del{{ follower.user_id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    {% endif %}   
+                                </div>
+                            {% else %}
+                                <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                    <div class="mt-1 mr-2">
+                                        <a href="{% url 'send_or_delete_follower_request' %}" class="botton_request follow_request" id='{{ follower.user_id }}'>
+                                            <button class="btn btn-primary">Follow</button>
+                                        </a>
+                                    </div>
+                                    {% if request.user == owner%}
+                                        <div class="mt-2">
+                                            <a href="{% url 'delete_follower' %}" class="link_icons Trigger" id="del{{ follower.user_id }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    {% endif %}                         
+                                </div>
+                            {% endif %}
+                            
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <h5><i>There aren't followers</i></h5>
+        
+
+
+    {% endif %}    
+
+
+    <!--Modal que se mostrara-->
+    <div id="myblockmodal" class="block_modal position-fixed w-100 h-100">
+
+        <div id="modal_menssage" class="col-10 bg-white border border-secondary mx-auto pb-1">
+
+            <p>¿Delete this follower?</p>  
+
+            <div>
+                <button class="btn btn-outline-success" id="accept_reset">
+                    Accept
+                </button>
+
+                <button class="btn btn-outline-danger" id="cancel_reset">
+                    Cancel
+                </button>
+            </div>
+            
+        </div>
+
+    </div>
+
+
+
+    <!--page_obj.has_previous: Verifica si hay una página anterior.-->
+    <!--page_obj.has_next: Verifica si hay una página posterior.-->
+    <!--page_obj.previous_page_number: Devuelve el número de la página anterior.-->
+    <!--page_obj.next_page_number: Devuelve el número de la siguiente página.-->
+    <!--page_obj.number: Devuelve el número de la página actual.-->
+    <!--page_obj.paginator.num_pages: Devuelve el número total de páginas.-->
+
+    {% if is_paginated %}<!--CREO QUE ENTRARA A ESTE IF SI HAY MAS DE 10 PUBLICACIONES QUE ES CUANDO SE NECESITARA MAS DE UNA PAGINA PARA MOSTRAR TODAS LAS PUBLICACIONES-->
+
+        {% if page_obj.has_previous %}<!--ENTRA A ESTE IF SI LA PAGINA EN LA QUE ESTAMOS TIENE UNA PREVIA, O SEA ESTAMOS EN LA 2, ENTONCES ENTRARA PARA PODER VOLVER A LA PRIMERA-->
+            <!--LINK A LA PRIMERA PAGINA-->
+            <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+            <!--LINK PARA IR A AL PAGINA ANTERIOR-->
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}<!--este for es para que se muestren determinada cantidad de numeros de paginas a los lados del numero en que estamos, en este caso 3 de cada lado, por ejemplo si estamos en la pagina 6, se mostra lo sigueinte: previos-4-5-"6"-7-8-next-->
+            {% if page_obj.number == num %}<!--NOS FIJAMOS SI LA PAGINA ACTUAL ES IGUAL A num-->
+                <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}<!--VERIFICA SI HAY UNA PAGINA POSTERIOR, SI LA HAY, ENTRA-->
+            <!--LINK PARA ACCEDER A LA SIGUIENTE PAGINA-->
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <!---->
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+
+    {% endif %}
+
+
+    {{ url_send|json_script:"url_send" }}
+    {{ url_delete_follower|json_script:"url_delete_follower" }}
+    
+
+{% endblock %}
+
+
+
+
+
+{% block jsfiles %}
+    
+    <script type="text/javascript" src="{% static 'js/delete_follower.js' %}"></script><!--Script para manejar eventos de touch sobre los paises.-->
+
+
+    <script type="text/javascript" src="{% static 'js/followers_list.js' %}"></script>
+
+
+{% endblock jsfiles %}

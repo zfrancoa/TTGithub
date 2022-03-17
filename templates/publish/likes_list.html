@@ -1,0 +1,212 @@
+<!--Lista de usuario recomendada para agregar-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+
+{% block title %} likes_list {% endblock %}
+
+{% load static %}
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+
+<link rel="stylesheet" href="{% static 'css/users_list.css' %}" type="text/css" />
+
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+    <div class="fixed-top d-flex flex-row justify-content-start border-bottom">
+        <div class="p-2">
+            <a href="{{referer}}" class="link_icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+            </a>
+        </div>
+
+
+        <div class="p-2 ml-5" style="color: black; font-size: 20px;">
+            Likes list
+        </div>
+        
+
+    </div>
+
+    <br><br>
+    {% if List %}<!--ENTRA SOLO SI HAY USUARIOS QUE RECOMENDAR-->
+    
+        {% for item in List %}<!--Recorremos los usuarios que nos recomiendan para seguir-->   
+        
+            <div class="w-100 mt-4" id="MyFollower{{ item.user_like.id }}">
+                <div class="d-flex flex-row justify-content-between">
+                    <a href="{% url 'user_profile' item.user_like %}" class="link_icons">
+                        <div class="d-flex flex-row justify-content-start p-2">
+                            <div class="">
+                                <img src="{{ item.user_like.profile.photo.url }}" class="rounded-circle" width="45" height="45">  
+                            </div>
+                            <div class="ml-3 mt-1">
+                                <span id="span_name">{{item.user_like}}</span>
+                                {% if item.user_like.profile.bio %}
+                                    <br>
+                                    <span id="span_bio">{{item.user_like.profile.bio}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    
+                    {% if not request.user.profile == item.user_like.profile %}
+                        {% if item.user_like in follow_sent %}<!--ENTRAMOS A ESTE IF SI A EL USUARIO AUN NO LE HEMOS ENVIADO LA SOLICITUD-->
+                            <!--SI AL USUARIO LE ENVIAMOS LA SOLICITUD, ENTRARA ACA CON EL FIN DE QUE PODAMOS CANCELARLA-->
+                            <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                <div class="mt-1 mr-2">
+                                    <a href="{% url 'send_or_delete_follower_request' %}" class="botton_request cancel_request" id='{{ item.user_like.id }}'>
+                                        <button class="btn btn-warning">Cancel</button>
+                                    </a>
+                                </div>
+                            </div>
+                        {% else %}
+                        
+                            {% if item.user_like.profile in me_followings %}
+                                <!--SI AL USUARIO LE ENVIAMOS LA SOLICITUD, ENTRARA ACA CON EL FIN DE QUE PODAMOS CANCELARLA-->
+                                <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                    <div class="mt-1 mr-2">
+                                        <a href="{% url 'delete_following' %}" class="botton_request unfollow" id='{{ item.user_like.id }}'>
+                                            <button class="btn btn-warning">Following</button>
+                                        </a>
+                                    </div> 
+                                </div>
+                            {% else %}
+                                <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                    <div class="mt-1 mr-2">
+                                        <a href="{% url 'send_or_delete_follower_request' %}" class="botton_request follow_request" id='{{ item.user_like.id }}'>
+                                            <button class="btn btn-primary">Follow</button>
+                                        </a>
+                                    </div>                      
+                                </div>
+                            {% endif %}
+                            
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <h5><i>There aren't likes</i></h5>
+
+    {% endif %}  
+
+
+    <br>
+    
+    {% if List %}<!--Recorremos todos los post-->
+
+        
+        <div class="d-flex flex-row justify-content-center">
+
+            <!--page_obj.has_previous: Verifica si hay una página anterior.-->
+            <!--page_obj.has_next: Verifica si hay una página posterior.-->
+            <!--page_obj.previous_page_number: Devuelve el número de la página anterior.-->
+            <!--page_obj.next_page_number: Devuelve el número de la siguiente página.-->
+            <!--page_obj.number: Devuelve el número de la página actual.-->
+            <!--page_obj.paginator.num_pages: Devuelve el número total de páginas.-->
+
+            {% if is_paginated %}<!--CREO QUE ENTRARA A ESTE IF SI HAY MAS DE 10 PUBLICACIONES QUE ES CUANDO SE NECESITARA MAS DE UNA PAGINA PARA MOSTRAR TODAS LAS PUBLICACIONES-->
+
+                {% if page_obj.has_previous %}<!--ENTRA A ESTE IF SI LA PAGINA EN LA QUE ESTAMOS TIENE UNA PREVIA, O SEA ESTAMOS EN LA 2, ENTONCES ENTRARA PARA PODER VOLVER A LA PRIMERA-->
+                    <!--LINK A LA PRIMERA PAGINA-->
+                    <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+                    <!--LINK PARA IR A AL PAGINA ANTERIOR-->
+                    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}<!--este for es para que se muestren determinada cantidad de numeros de paginas a los lados del numero en que estamos, en este caso 3 de cada lado, por ejemplo si estamos en la pagina 6, se mostra lo sigueinte: previos-4-5-"6"-7-8-next-->
+                    {% if page_obj.number == num %}<!--NOS FIJAMOS SI LA PAGINA ACTUAL ES IGUAL A num-->
+                        <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}<!--VERIFICA SI HAY UNA PAGINA POSTERIOR, SI LA HAY, ENTRA-->
+                    <!--LINK PARA ACCEDER A LA SIGUIENTE PAGINA-->
+                    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+                    <!---->
+                    <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+
+            {% endif %}
+        </div>
+
+    {% endif %}
+
+    <br><br>
+
+    <div class="fixed-bottom d-flex flex-row justify-content-between border-top">
+
+        <div class="p-2">
+            <a class="link_icons" href="{% url 'home' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
+                    <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="p-2">
+            <a class="link_icons" href="{% url 'search_user_2' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="p-2">
+            <a class="link_icons" href="{% url 'upload_photo' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-plus-circle-dotted" viewBox="0 0 16 16">
+                    <path d="M8 0c-.176 0-.35.006-.523.017l.064.998a7.117 7.117 0 0 1 .918 0l.064-.998A8.113 8.113 0 0 0 8 0zM6.44.152c-.346.069-.684.16-1.012.27l.321.948c.287-.098.582-.177.884-.237L6.44.153zm4.132.271a7.946 7.946 0 0 0-1.011-.27l-.194.98c.302.06.597.14.884.237l.321-.947zm1.873.925a8 8 0 0 0-.906-.524l-.443.896c.275.136.54.29.793.459l.556-.831zM4.46.824c-.314.155-.616.33-.905.524l.556.83a7.07 7.07 0 0 1 .793-.458L4.46.824zM2.725 1.985c-.262.23-.51.478-.74.74l.752.66c.202-.23.418-.446.648-.648l-.66-.752zm11.29.74a8.058 8.058 0 0 0-.74-.74l-.66.752c.23.202.447.418.648.648l.752-.66zm1.161 1.735a7.98 7.98 0 0 0-.524-.905l-.83.556c.169.253.322.518.458.793l.896-.443zM1.348 3.555c-.194.289-.37.591-.524.906l.896.443c.136-.275.29-.54.459-.793l-.831-.556zM.423 5.428a7.945 7.945 0 0 0-.27 1.011l.98.194c.06-.302.14-.597.237-.884l-.947-.321zM15.848 6.44a7.943 7.943 0 0 0-.27-1.012l-.948.321c.098.287.177.582.237.884l.98-.194zM.017 7.477a8.113 8.113 0 0 0 0 1.046l.998-.064a7.117 7.117 0 0 1 0-.918l-.998-.064zM16 8a8.1 8.1 0 0 0-.017-.523l-.998.064a7.11 7.11 0 0 1 0 .918l.998.064A8.1 8.1 0 0 0 16 8zM.152 9.56c.069.346.16.684.27 1.012l.948-.321a6.944 6.944 0 0 1-.237-.884l-.98.194zm15.425 1.012c.112-.328.202-.666.27-1.011l-.98-.194c-.06.302-.14.597-.237.884l.947.321zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a6.999 6.999 0 0 1-.458-.793l-.896.443zm13.828.905c.194-.289.37-.591.524-.906l-.896-.443c-.136.275-.29.54-.459.793l.831.556zm-12.667.83c.23.262.478.51.74.74l.66-.752a7.047 7.047 0 0 1-.648-.648l-.752.66zm11.29.74c.262-.23.51-.478.74-.74l-.752-.66c-.201.23-.418.447-.648.648l.66.752zm-1.735 1.161c.314-.155.616-.33.905-.524l-.556-.83a7.07 7.07 0 0 1-.793.458l.443.896zm-7.985-.524c.289.194.591.37.906.524l.443-.896a6.998 6.998 0 0 1-.793-.459l-.556.831zm1.873.925c.328.112.666.202 1.011.27l.194-.98a6.953 6.953 0 0 1-.884-.237l-.321.947zm4.132.271a7.944 7.944 0 0 0 1.012-.27l-.321-.948a6.954 6.954 0 0 1-.884.237l.194.98zm-2.083.135a8.1 8.1 0 0 0 1.046 0l-.064-.998a7.11 7.11 0 0 1-.918 0l-.064.998zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="p-2" id="div_svg_notification">
+            <a class="link_icons" href="{% url 'list_notification' %}" id="bell_svg_notification">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                </svg>
+                {% if received_follower_request > 0  %}
+                    <svg id="point_svg_notification" version="1.1" baseProfile="full" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="5" r="4" fill="red" />
+                    </svg>
+                {% endif %}
+            </a>
+        </div>
+
+        <div class="p-2">
+            <a class="" href="{% url 'myprofile' %}">
+                <img src="{{ request.user.profile.photo.url }}" class="rounded-circle" width="23" height="23">
+            </a>
+        </div>
+
+    </div>
+
+    {{ url_send|json_script:"url_send" }}
+
+{% endblock %}
+
+
+{% block jsfiles %}
+
+<script type="text/javascript" src="{% static 'js/followers_list.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/followers_list.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/followers_list.js' %}"></script>
+
+{% endblock jsfiles %}

@@ -1,0 +1,125 @@
+<!--ACA SE veran las opciones para agregar una foto-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+
+{% block title %} Upload photo {% endblock %}
+
+
+{% block searchform %}
+{% endblock searchform %}
+
+{% block addgoogle %}
+
+
+{% endblock addgoogle %}
+
+
+{% block cssfiles %}
+
+    <link rel="stylesheet" href="{% static 'css/upload_photo.css' %}" type="text/css" />
+
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+
+    
+    <div class="fixed-top d-flex flex-row border-bottom">
+                
+        <div class="p-2">
+            <a href="{{referer}}" class="link_icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                    <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="w-100 p-3 mt-5" id="container_add_featured"><!--SOLICITUDES DE SEGUIDORES-->
+        <a class="link_icons" href="{% url 'FeaturedPostCreateView' %}">
+            <div class="d-flex justify-content-start">
+                <div class="p-2 mt-1">
+                    <span>
+                        Upload a photo to your featured photo album.
+                    </span>
+                </div>
+            </div>            
+        </a>     
+    </div>
+    
+    <div class="w-100 p-3 mt-5" id="container_add_photo_country"><!--SOLICITUDES ENVIADAS-->
+        <a class="link_icons" href="javascript:void(0);">
+            <div class="d-flex justify-content-start">
+                <div class="p-2 mt-1">
+                    <span>
+                        Upload a photo to a country.
+                    </span>
+                </div>
+            </div>            
+        </a> 
+    </div>
+
+
+    <!--Modal que se mostrara-->
+    <div id="myblockmodal" class="block_modal position-fixed w-100 h-100">
+
+        <div id="modal_menssage" class="col-10 bg-white border border-secondary mx-auto pb-1">
+            
+            <span id="close_button">&times;</span>
+            
+            {% if country_list %}
+                <p>Choose the country to add a photo:</p>
+
+                <input placeholder="Write a country" class="form-control" type="text" name="country_added" id="input_name_country" list='datalist_countries' autocomplete='off'>
+                <datalist id="datalist_countries">
+                    <!-- ACA IRAN LOS PAISES -->
+                    <!-- <option class="option_element" value="Chrome"> -->
+                        <!-- ACA IRAN LOS PAISES -->
+                    {% for item in country_list %}
+                    <!-- <option class="option_element" value="Chrome"> -->
+                        <option class="option_element{{ item.countries_tot }}" value="{{ item.countries_tot }}" id="{{ item.id }}">
+                    {% endfor %}
+                </datalist>
+                <button class="form-control btn btn-outline-success mt-2 mb-3" id="go_add">
+                    Go
+                </button>   
+
+            {% else %}
+                <p>To add a photo, you must first add at least one country:</p>  
+                
+                <a href="{% url 'Add_Country' %}">
+                    <button class="form-control btn btn-outline-success mb-3">
+                        Add country
+                    </button>
+                </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!--variable que contiene la url que maneja  la vista que trata con las sessiones para ver si se muestre o no el tutorial-->
+    {{ request.user.username|json_script:"username" }}
+
+
+
+{% endblock %}
+
+
+{% block jsfiles %}
+
+    <script type="text/javascript" src="{% static 'js/upload_photo.js' %}"></script><!--Script para manejar eventos de touch sobre los paises.-->
+    <script type="text/javascript" src="{% static 'js/access_country_by_form.js' %}"></script><!--Script para manejar eventos de touch sobre los paises.-->
+
+
+{% endblock jsfiles %}
+

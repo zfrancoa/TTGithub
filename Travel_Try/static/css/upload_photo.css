@@ -1,0 +1,45 @@
+.link_icons{
+    color: rgb(36, 32, 32);
+}
+
+/* mouse over link */
+.link_icons:hover { 
+    color: black;
+}
+
+span{
+    text-decoration: none;
+    display:inline-block;
+}
+
+a:hover{
+    color: inherit; /* Inherits color property from its parent */
+}
+
+#container_add_featured, #container_add_photo_country{
+    background-color: rgb(231, 233, 235);
+}
+
+.block_modal {
+    display: none;
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4);
+}
+
+#modal_menssage{
+    top: 30%;
+    border: 2px;
+    border-radius: 10px;
+}
+
+
+#close_button{
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}

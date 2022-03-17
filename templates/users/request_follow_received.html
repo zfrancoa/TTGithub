@@ -1,0 +1,144 @@
+<!--este templete mostrara el perfil de los usuarios, el usuario logeado tendra su propia template-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+{% load static %}
+
+{% block title %}Received{% endblock %}
+
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+    <!--aunque se llame followers_list, tambien funciona para este template-->
+    <link rel="stylesheet" href="{% static 'css/followers_list.css' %}" type="text/css" />
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+
+    <div class="fixed-top d-flex flex-row justify-content-start border-bottom">
+        <div class="p-2">
+            <a href="{% url 'list_notification' %}" class="link_icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+            </a>
+        </div>
+
+
+        <div class="p-2 ml-5" style="color: black; font-size: 20px;">
+            Received
+        </div>
+        
+
+    </div>
+
+    <br><br>
+
+    {% if received_follower_request %}<!--ENTRA SOLO SI HAY USUARIOS QUE RECOMENDAR-->
+
+        {% for request_received in received_follower_request %}<!--Recorremos los usuarios que nos recomiendan para seguir-->   
+        
+            <div class="w-100 mt-4" id="MyFollower{{ request_received.user_id }}">
+                <div class="d-flex flex-row justify-content-between">
+                    <a href="{% url 'user_profile' request_received.from_user %}" class="link_icons">
+                        <div class="d-flex flex-row justify-content-start p-2">
+                            <div class="">
+                                <img src="{{ request_received.from_user.profile.photo.url }}" class="rounded-circle" width="45" height="45">  
+                            </div>
+                            <div class="ml-3 mt-1">
+                                <span id="span_name">{{request_received.from_user.username}}</span>
+                                {% if request_received.from_user.profile.bio %}
+                                    <br>
+                                    <span id="span_bio">{{request_received.from_user.profile.bio}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    
+                    {% if not request.user.profile == request_received.from_user.profile %}<!--Si nos vmeos a nosotros mismos, entonces no nos podemos enviar solicitudes-->
+                        
+                        {% if request_received.from_user.profile in followings%}<!--si entra aca es porque estamos siguiendo a este usuario, y agregaremos una clase para identificar que lo estamos siguiendo, con el fin de que en un .js podremos cambiar a following o follow un boton-->
+                            lo sigo
+                            <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                <div class="mt-1 mr-2">
+                                    <a href="{% url 'accept_follower_request' %}" class="first following accept" id='{{ request_received.from_user.id }}'>
+                                        <button class="btn btn-primary">Accept</button>
+                                    </a>
+                                </div>
+                                <div class="mt-2" id="block_cancel_request{{  request_received.from_user.id }}">
+                                    <a href="{% url 'reject_request_received' %}" class="link_icons first following delete" id='r{{ request_received.from_user.id }}'>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        {% else %}
+
+                            {% if request_received.from_user in follow_sent %}
+                                le mande
+                                <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                    <div class="mt-1 mr-2">
+                                        <a href="{% url 'accept_follower_request' %}" class="first sent accept" id='{{ request_received.from_user.id }}'>
+                                            <button class="btn btn-primary">Accept</button>
+                                        </a>
+                                    </div>
+                                    <div class="mt-2" id="block_cancel_request{{  request_received.from_user.id }}">
+                                        <a href="{% url 'reject_request_received' %}" class="link_icons first sent delete" id='r{{ request_received.from_user.id }}'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% else %}
+                                no lo sigo
+                                <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                    <div class="mt-1 mr-2">
+                                        <a href="{% url 'accept_follower_request' %}" class="first follow accept" id='{{ request_received.from_user.id }}'>
+                                            <button class="btn btn-primary">Accept</button>
+                                        </a>
+                                    </div>
+                                    <div class="mt-2" id="block_cancel_request{{  request_received.from_user.id }}">
+                                        <a href="{% url 'reject_request_received' %}" class="link_icons first follow delete" id='r{{ request_received.from_user.id }}'>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <h5><i>There aren't received requests</i></h5>
+        
+    {% endif %}  
+
+    {{ url_send|json_script:"url_send" }}
+    {{ url_delete_following|json_script:"url_delete_following" }}
+
+
+
+{% endblock %}
+
+
+{% block jsfiles %}
+
+
+    <script type="text/javascript" src="{% static 'js/request_follow_received.js' %}"></script>
+
+
+{% endblock jsfiles %}

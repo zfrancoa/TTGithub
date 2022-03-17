@@ -1,0 +1,29 @@
+.container_image_and_span {
+    position:relative;
+    display:inline-block;
+}
+.notify_badge{
+    position: absolute;
+    right:-1px;
+    top: 8px;
+    background:rgb(247, 63, 47);
+    border-radius: 50%;
+    color:white;
+    padding-left:8px;
+    padding-right:8px;
+}
+
+.some_links{
+
+    text-decoration: none;
+    color: black;
+}
+
+span{
+    text-decoration: none;
+    display:inline-block;
+}
+
+a:hover{
+    color: inherit; /* Inherits color property from its parent */
+}

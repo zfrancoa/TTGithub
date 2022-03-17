@@ -1,0 +1,109 @@
+<!--Lista de usuario recomendada para agregar-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+{% load static %}
+
+{% block title %} Users List {% endblock %}
+
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+
+<link rel="stylesheet" href="{% static 'css/users_list.css' %}" type="text/css" />
+
+
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+
+    <div class="fixed-top d-flex flex-row justify-content-start border-bottom">
+                        
+        <div class="p-2">
+            <a href="{% url 'myprofile' %}" class="link_icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+            </a>
+        </div>
+
+
+        <div class="p-2 ml-5" style="color: black; font-size: 20px;">
+           Meet people
+        </div>
+        
+
+    </div>
+
+    <br><br>
+
+   
+
+
+    {% if users_list %}<!--ENTRA SOLO SI HAY USUARIOS QUE RECOMENDAR-->
+       
+        {% for future_following in users_list %}<!--Recorremos los usuarios que nos recomiendan para seguir-->   
+        
+            <div class="w-100 mt-4">
+                <div class="d-flex flex-row justify-content-between">
+                    <a href="{% url 'user_profile' future_following %}" class="link_icons">
+                        <div class="d-flex flex-row justify-content-start p-2">
+                            <div class="">
+                                <img src="{{ future_following.photo.url }}" class="rounded-circle" width="45" height="45">  
+                            </div>
+                            <div class="ml-3 mt-1">
+                                <span id="span_name">{{future_following}}</span>
+                                {% if future_following.bio %}
+                                    <br>
+                                    <span id="span_bio">{{future_following.bio}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    
+        
+                    {% if not future_following.user in follow_sent %}<!--ENTRAMOS A ESTE IF SI A EL USUARIO AUN NO LE HEMOS ENVIADO LA SOLICITUD-->
+                        <div class="p-2 mr-1">
+                            <div class="mt-1">
+                                <a href="{% url 'send_or_delete_follower_request' %}" class="botton_request follow_request" id='{{ future_following.user_id }}'>
+                                    <button class="btn btn-primary">Follow</button>
+                                </a>
+                            </div>  
+                        </div>
+                    {% else %}<!--SI AL USUARIO LE ENVIAMOS LA SOLICITUD, ENTRARA ACA CON EL FIN DE QUE PODAMOS CANCELARLA-->
+                        <div class="p-2 mr-1">
+                            <div class="mt-1">
+                                <a href="{% url 'send_or_delete_follower_request' %}" class="botton_request cancel_request" id='{{ future_following.user_id }}'>
+                                    <button class="btn btn-warning">Cancel</button>
+                                </a>
+                            </div>  
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <h5><i>There aren't users to recomended</i></h5>
+        <br>
+        <h6>
+            This list will be updated as you have new followers
+        </h6>
+
+    {% endif %}             
+
+{% endblock %}
+
+
+{% block jsfiles %}
+
+    <script type="text/javascript" src="{% static 'js/users_list.js' %}"></script><!--Script para manejar eventos de touch sobre los paises.-->
+
+{% endblock jsfiles %}

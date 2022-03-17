@@ -1,0 +1,107 @@
+<!--este templete muestra las soicitudes enviadas-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+{% load static %}
+
+{% block title %} Sent{% endblock %}
+
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+    
+    <link rel="stylesheet" href="{% static 'css/followers_list.css' %}" type="text/css" />
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+
+    <div class="fixed-top d-flex flex-row justify-content-start border-bottom">
+        <div class="p-2">
+            <a href="{% url 'list_notification' %}" class="link_icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+            </a>
+        </div>
+
+
+        <div class="p-2 ml-5" style="color: black; font-size: 20px;">
+            Sent
+        </div>
+        
+
+    </div>
+
+    <br><br>
+
+    {% if sent_follower_request %}<!--ENTRA SOLO SI HAY USUARIOS QUE RECOMENDAR-->
+
+        {% for request_sent in sent_follower_request %}<!--Recorremos los usuarios que nos recomiendan para seguir-->   
+        
+            <div class="w-100 mt-4" id="MyFollower{{ request_sent.user_id }}">
+                <div class="d-flex flex-row justify-content-between">
+                    <a href="{% url 'user_profile' request_sent %}" class="link_icons">
+                        <div class="d-flex flex-row justify-content-start p-2">
+                            <div class="">
+                                <img src="{{ request_sent.to_user.profile.photo.url }}" class="rounded-circle" width="45" height="45">  
+                            </div>
+                            <div class="ml-3 mt-1">
+                                <span id="span_name">{{request_sent.to_user.username}}</span>
+                                {% if request_sent.to_user.profile.bio %}
+                                    <br>
+                                    <span id="span_bio">{{request_sent.to_user.profile.bio}}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </a>
+                    
+                    {% if not request.user.profile == request_sent.to_user.profile %}<!--Si nos vmeos a nosotros mismos, entonces no nos podemos enviar solicitudes-->
+                        {% if request_sent.to_user in follow_sent %}<!--ENTRAMOS A ESTE IF SI A EL USUARIO AUN NO LE HEMOS ENVIADO LA SOLICITUD-->
+                            <!--SI AL USUARIO LE ENVIAMOS LA SOLICITUD, ENTRARA ACA CON EL FIN DE QUE PODAMOS CANCELARLA-->
+                            <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                <div class="mt-1 mr-2">
+                                    <a href="{% url 'send_or_delete_follower_request' %}" class="botton_request cancel_request" id='{{ request_sent.to_user.id }}'>
+                                        <button class="btn btn-warning">Cancel</button>
+                                    </a>
+                                </div>
+                            </div>
+
+                        {% else %}
+                        
+                            <div class="d-flex flex-row justify-content-between p-2 mr-1">
+                                <div class="mt-1 mr-2">
+                                    <a href="{% url 'send_or_delete_follower_request' %}" class="botton_request follow_request" id='{{ request_sent.to_user.id }}'>
+                                        <button class="btn btn-primary">Follow</button>
+                                    </a>
+                                </div>                        
+                            </div>
+                            
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <h5><i>There aren't sent requests</i></h5>
+        
+
+
+    {% endif %}  
+
+
+{% endblock %}
+
+
+{% block jsfiles %}
+
+    <script type="text/javascript" src="{% static 'js/followers_list.js' %}"></script>
+    
+{% endblock jsfiles %}

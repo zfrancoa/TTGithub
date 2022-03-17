@@ -1,0 +1,77 @@
+<!--ACA SE EDITARA EL PERFIL DE LOS USUARIOS-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+
+{% block title %} Edit username {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+
+    <link rel="stylesheet" href="{% static 'css/update_username.css' %}" type="text/css" />
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <div class="fixed-top d-flex flex-row justify-content-between border-bottom">
+                        
+            <div class="p-2">
+                <a href="{% url 'update_profile'  %}" class="link_icons">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="p-2" style="color: black; font-size: 20px;">
+                Edit username
+            </div>
+
+            <div class="p-2">
+                <a href="#" class="" id="save_usernameform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+
+        <div class="mt-5">
+            <form class="form-signin" method = "POST"><!--ESTE FORMULARIO ES PARA editar el username-->
+                {% csrf_token %}
+                <fieldset class="form-group"><br>
+                    {{ user_form|crispy }}
+                </fieldset>
+                <button type="submit" id="buttonsaveform" class="btn btn-success">Save username</button>
+            </form>
+        </div>
+        
+    {% endif %}
+
+
+    
+{% endblock %}
+
+
+{% block jsfiles %}
+
+    <script>
+        var btn_save = document.getElementById("save_usernameform");//BOTON DE CONFIRMACION EN LA CABCERA DE LA PAGINA
+        var btn_save_notview = document.getElementById("buttonsaveform");//BOTON DEL FORM QUE NO VEMOS
+        // CUANDO SE HAGA CLICK EN EL SVG DE CONFIRMAR, SE HARA CLICK EN EL BOTON DEL FORMULARIO, PARA ENVIARLO:
+        btn_save.onclick = function() {
+            btn_save_notview.click();
+        }
+    </script>
+{% endblock jsfiles %}

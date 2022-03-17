@@ -1,0 +1,21 @@
+.abs-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.form {
+    width: 450px;
+}
+
+
+
+#title 
+{
+    color: black;
+    text-decoration: none;/*Eliminamos el subrayado del enlace  */
+    font-family: 'Dancing Script';
+    margin: 8px;
+    font-size: 30px;
+}

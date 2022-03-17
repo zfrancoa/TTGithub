@@ -1,0 +1,45 @@
+
+        #bell_svg_notification{
+            position: relative;
+        }
+        #div_svg_notification {
+            position: relative; 
+        }
+        #point_svg_notification {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .link_icons{
+            color: black;
+        }
+
+        /* mouse over link */
+        .link_icons:hover { 
+            text-decoration: none;
+            color: black;
+        }
+        @media (max-width: 500px) {
+            .desbordamiento{
+                display:inline-block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 70px;
+            }
+        }
+        @media (min-width: 500px) {
+            .biography_block{
+                text-align: center;
+            }
+        }
+
+
+        .button_edit_profile{
+
+            border-radius: 5px;
+            background-color: rgb(255, 255, 255);
+            border-width: 1px;
+            border-color: rgb(184, 176, 176);
+        }

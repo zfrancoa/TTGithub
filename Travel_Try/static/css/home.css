@@ -1,0 +1,131 @@
+body {
+    background-color: rgb(250, 250, 250)
+    
+}
+
+.options i {
+    margin-right: 16px;
+}
+
+.block-image img {
+    width: 100%;
+    height: auto
+}
+
+
+.some-links{
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+
+
+.some-links:hover{
+    color: inherit; /* Inherits color property from its parent */
+}
+
+
+.some-links_2{
+    text-decoration: none;
+    color: black;
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+}
+
+.button-share{
+    border: none;
+    background-color: rgb(255, 255, 255);
+    
+}
+
+
+.fixed-bottom, .fixed-top{
+
+    background-color: rgb(250, 250, 250);
+
+}
+
+.span_title{
+
+    font-family: 'Dancing Script';
+    font-size: 22px;
+    cursor: pointer;
+
+}
+
+a:hover{
+    text-decoration: none;
+    color: black;
+}
+
+.link_icons{
+    color: black;
+}
+
+/* mouse over link */
+.link_icons:hover { 
+    color: black;
+}
+
+@media (min-width: 500px) {
+    #div_1{
+        
+        display: flex;
+        justify-content: center;
+        grid-row: 1 / 1;
+
+    }
+
+    #div_2{
+        width: 50%;
+    }
+
+    #div_3{
+        
+        display: flex;
+        justify-content: center;
+        grid-row: 1 / 1;
+
+    }
+
+    #div_4
+    {
+        width: 50%;
+    }
+}
+
+.cant_messages{
+    border-radius: 50%;
+    background-color:rgb(247, 63, 47);
+    color:white;
+    display:inline-block;
+    padding-left:8px;
+    padding-right:8px;
+    text-align:center;
+}
+
+
+
+#bell_svg_notification{
+    position: relative;
+}
+#div_svg_notification {
+    position: relative; 
+}
+#point_svg_notification {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+
+.desbordamiento{
+    display:inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 230px;
+}

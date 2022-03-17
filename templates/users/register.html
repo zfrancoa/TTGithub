@@ -1,0 +1,73 @@
+<!--ACA SE EDITARA EL PERFIL DE LOS USUARIOS-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+
+{% block title %} Register {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+{% endblock cssfiles %} 
+
+
+{% block content %}
+    
+    <div class="container py-5">
+        <h1>Register</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col">
+                    {{ register_form.username|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ register_form.email|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ register_form.password1|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ register_form.password2|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ register_form.captcha }}
+                    {{ register_form.captcha.errors }}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <p>
+                        {{ register_form.accept_terms_and_conditions }} 
+                        By clicking the "Register" button, you indicate that you have read
+                        and agree to the <a href="{% url 'Terms_and_Conditions_not_login'%}"> Website Terms and Conditions </a> 
+                        and that you have read and understood the 
+                        <a href = "{% url 'Privacy_Policy_not_login'%}" > Privacy Policy </a>.
+                    </p>
+                </div>
+            </div>
+            <button class="btn btn-primary" type="submit">Register</button>
+        </form>
+        
+    </div>
+
+    <a href="{% url 'login'%}" class="link-primary">Click here to login.</a><!--ENLACE PARA CERRAR SESIÓN-->
+
+{% endblock %}
+
+
+{% block jsfiles %}
+{% endblock jsfiles %}

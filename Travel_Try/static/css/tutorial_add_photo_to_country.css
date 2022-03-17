@@ -1,0 +1,50 @@
+#popup_container{
+    width: 120px;
+    border-radius: 8px;
+
+    position: fixed;
+    bottom: 44px;
+    right: 0;
+
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    flex: auto;
+}
+
+
+@media (max-width: 600px) {
+    #popup_container {
+        height: 142px;
+    }
+}
+
+@media (min-width: 600px) {
+    #popup_container {
+        height: 250px;
+    }
+}
+
+
+
+#popup_container::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+}
+
+.continue_tutorial{
+    cursor: pointer;
+}
+.close_tutorial{
+    cursor: pointer;
+}
+
+.popuptext{
+    color: white;
+    font-size: 14px;
+}
+
+
+
+.close_tutorial, .continue_tutorial{
+    color: rgb(55, 236, 97);
+    font-size: 14px;
+}

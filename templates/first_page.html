@@ -1,0 +1,100 @@
+<!--plantilla para hacer login-->
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+{% load static %}
+
+{% block title %} Welcome {% endblock %}
+
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+
+<link rel="stylesheet" href="{% static 'css/login.css' %}" type="text/css" />
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col text-center">
+                <svg width="100" height="100" version="1.1" viewBox="0.0 0.0 960.0 720.0" fill="none" stroke="none" stroke-linecap="square" stroke-miterlimit="10" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+                    <clipPath id="p.0">
+                        <path d="m0 0l960.0 0l0 720.0l-960.0 0l0 -720.0z" clip-rule="nonzero"/>
+                    </clipPath>
+                    <g clip-path="url(#p.0)">
+                        <path fill="#000000" fill-opacity="0.0" d="m0 0l960.0 0l0 720.0l-960.0 0z" fill-rule="evenodd"/>
+                        <path fill="#cfe2f3" d="m120.97638 360.0l0 0c0 -195.89148 160.74036 -354.6929 359.02362 -354.6929l0 0c95.218994 0 186.53802 37.369324 253.86804 103.88715c67.329956 66.51783 105.15558 156.73535 105.15558 250.80576l0 0c0 195.89148 -160.74036 354.69293 -359.02362 354.69293l0 0c-198.28326 0 -359.02362 -158.80145 -359.02362 -354.69293z" fill-rule="evenodd"/><path stroke="#000000" stroke-width="1.0" stroke-linejoin="round" stroke-linecap="butt" d="m120.97638 360.0l0 0c0 -195.89148 160.74036 -354.6929 359.02362 -354.6929l0 0c95.218994 0 186.53802 37.369324 253.86804 103.88715c67.329956 66.51783 105.15558 156.73535 105.15558 250.80576l0 0c0 195.89148 -160.74036 354.69293 -359.02362 354.69293l0 0c-198.28326 0 -359.02362 -158.80145 -359.02362 -354.69293z" fill-rule="evenodd"/>
+                        <path fill="#000000" fill-opacity="0.0" d="m271.0761 117.34908l772.4095 0l0 504.189l-772.4095 0z" fill-rule="evenodd"/>
+                        <path fill="#000000" d="m511.52924 245.50533l2.921875 62.10939l-7.421875 0q-2.140625 -16.40625 -5.859375 -23.4375q-6.046875 -11.328125 -16.109375 -16.703125q-10.0625 -5.375 -26.46875 -5.375l-37.296875 0l0 202.34375q0 24.421875 5.265625 30.46875q7.421875 8.203125 22.859375 8.203125l9.171875 0l0 7.234375l-112.296875 0l0 -7.234375l9.375 0q16.796875 0 23.828125 -10.15625q4.296875 -6.25 4.296875 -28.515625l0 -202.34375l-31.84375 0q-18.546875 0 -26.359375 2.734375q-10.15625 3.71875 -17.390625 14.265625q-7.21875 10.546875 -8.59375 28.515625l-7.421875 0l3.125 -62.10939l216.21875 0zm77.33594 27.14064l0 58.796875l41.796875 0l0 13.671875l-41.796875 0l0 116.015625q0 17.375 4.984375 23.4375q4.984375 6.046875 12.796875 6.046875q6.4375 0 12.484375 -4.0q6.0625 -4.0 9.390625 -11.8125l7.609375 0q-6.828125 19.140625 -19.328125 28.8125q-12.5 9.6718445 -25.78125 9.6718445q-8.984375 0 -17.578125 -4.9843445q-8.59375 -4.984375 -12.703125 -14.265625q-4.09375 -9.28125 -4.09375 -28.609375l0 -120.3125l-28.328125 0l0 -6.453125q10.75 -4.296875 21.96875 -14.546875q11.234375 -10.25 20.03125 -24.3125q4.484375 -7.421875 12.5 -27.15625l6.046875 0z" fill-rule="nonzero"/>
+                    </g>
+                </svg>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <h3 class="text-center">Welcome to TravelTry</h3>
+                <br>
+                <h5 class="text-center">Social media for travelers!</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <br>
+                <br>
+                <!-- <p class="text-center">
+                    <button class="btn btn-primary">
+                        <a style="color: white;" href="{% url 'login' %}">Continue</a>
+                    </button>
+                </p> -->
+                <!-- <p class="text-center">
+                    <a  href="{% url 'login' %}">
+                        <button class="btn btn-primary" style="color: white;">
+                            Continue
+                        </button>
+                    </a>
+                </p> -->
+
+                <p class="text-center">
+                    <a style="color: white;" href="{% url 'login_anfitrion' %}">
+                        <button class="btn btn-primary">
+                            Take a look
+                        </button>
+                    </a>
+                </p>
+                <br>
+                <p class="text-center">
+                    <a style="color: white;" href="{% url 'register' %}">
+                        <button class="btn btn-primary">
+                            Register
+                        </button>
+                    </a>
+                </p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="row">
+            <div class="col">
+                <p class="mt-3 mb-3 text-muted text-center">&copy; 2022</p>
+            </div>
+        </div>
+    </div>
+    
+                
+    
+
+{% endblock %}
+
+
+{% block jsfiles %}
+{% endblock jsfiles %}
+
+

@@ -1,0 +1,52 @@
+body {
+    background-color: rgb(250, 250, 250)
+    
+}
+
+.fixed-bottom, .fixed-top{
+
+    background-color: rgb(250, 250, 250);
+
+}
+
+
+.link_icons{
+    color: black;
+}
+
+/* mouse over link */
+.link_icons:hover { 
+    text-decoration: none;
+    color: black;
+}
+
+#span_name{
+    display:inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px;
+}
+
+#span_bio{
+    display:inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 130px;
+    font-size: 10px;
+}
+
+
+
+#bell_svg_notification{
+    position: relative;
+}
+#div_svg_notification {
+    position: relative; 
+}
+#point_svg_notification {
+    position: absolute;
+    left: 0;
+    top: 0;
+}

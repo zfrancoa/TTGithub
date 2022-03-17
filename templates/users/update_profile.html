@@ -1,0 +1,111 @@
+<!--ACA SE EDITARA EL PERFIL DE LOS USUARIOS-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+
+{% block title %} Edit profile {% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+
+    <link rel="stylesheet" href="{% static 'css/update_profile.css' %}" type="text/css" />
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+    {% if user.is_authenticated %}
+
+        <div class="fixed-top d-flex flex-row justify-content-between border-bottom">
+                    
+            <div class="p-2">
+                <a href="{% url 'myprofile'%}" class="link_icons">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="p-2" style="color: black; font-size: 20px;">
+                Edit profile
+            </div>
+
+            <div class="p-2">
+                <a href="#" class="" id="save_profileform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+
+        <br><br>
+        <div class="mt-2">
+            
+            <form class="" method = "POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="text-center p-2">
+                    <img src="{{ request.user.profile.photo.url }}" class="rounded-circle" id="image_profile" width="90" height="90">  
+                </div>
+
+                <div class="text-center p-2 mt-1 ml-1">
+                    <!-- show label of field -->
+                    <div style="display: none;">
+                        {{profile_form.photo.label_tag}}
+                    </div>
+                    
+                    <!--  check for input type -->
+                    {% if profile_form.photo.field.widget.input_type == 'file'%}
+                        <div style="display: none;">
+                            <a href="{{ MEDIA_URL }}{{ profile_form.photo.value }}">{{ profile_form.photo.value }}</a><br/>
+                        </div>    
+                        <input type="file" id="ChangePhoto" name="{{ profile_form.photo.name }}"/>
+                    {% endif %} 
+                </div>
+                
+                <div class="p-2">
+                    <p>
+                        Username:
+                        <span>
+                            {{ request.user.profile }}    
+                        </span>    
+                        <a href="{% url 'update_username'%}" class="link-primary">   Change username</a>   
+                    </p>
+                </div>
+                
+                <div class="p-2">
+                    {{ profile_form.bio|as_crispy_field }}
+                </div>
+
+                <div class="p-2">
+                    {{ profile_form.private|as_crispy_field }}
+                </div>
+
+                <button type="submit" class="btn btn-success" id="buttonsaveform">Save</button>     
+
+            </form>
+
+        </div>
+
+    {% endif %}
+
+
+
+{% endblock %}
+
+
+{% block jsfiles %}
+
+    <script type="text/javascript" src="{% static 'js/update_profile.js' %}"></script><!--Script para manejar eventos de touch sobre los paises.-->
+
+{% endblock jsfiles %}

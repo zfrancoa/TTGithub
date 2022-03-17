@@ -1,0 +1,103 @@
+<!--ACA SE CREARA UNA PUBLICACION, Featured post-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+
+{% block title %} Create Featured Photo {% endblock %}
+
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+
+{% block cssfiles %}
+
+    <link rel="stylesheet" href="{% static 'css/created_featured_photo.css' %}" type="text/css" />
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+ 
+    {% if user.is_authenticated %}
+
+        <div class="fixed-top d-flex flex-row justify-content-between border-bottom">
+                    
+            <div class="p-2">
+                <a href="{{referer}}" class="link_icons">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="p-2 ml-5" style="color: black; font-size: 20px;">
+                Post
+            </div>
+
+            <div class="p-2">
+                <a href="#" class="" id="save_profileform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="28" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+
+        <br>
+                        
+        <div id="div_1"> <!-- class="d-flex justify-content-center row" -->
+            <div id="div_2"> <!-- class="col-6" -->
+
+                <div class="mt-5">
+                    <form method="POST" enctype="multipart/form-data">
+                        
+                        <!-- Security token -->
+                        {% csrf_token %}
+                    
+
+                        <div class="text-center" id="img_block">
+                            <img id="image_post" class="img-fluid" src="">
+                        </div>
+
+                        <div class="text-center ml-1">
+
+                            <!-- show label of field -->
+                            <div style="display: none;">
+                                {{form.pic.label_tag}}
+                            </div>
+
+                            <!--  check for input type -->
+                            {% if form.pic.field.widget.input_type == 'file'%}
+                                <div style="display: none;">
+                                    <a href="{{ MEDIA_URL }}{{ form.pic.value }}">{{ form.pic.value }}</a><br/>
+                                </div>    
+                                <input type="file" id="ChangePhoto" name="{{ form.pic.name }}"/>
+                            {% endif %}
+
+                        </div>
+
+                        <div class="p-2">
+                            {{ form.body|as_crispy_field }}
+                        </div>
+
+                        <button type="submit" class="btn btn-success" id="buttonsaveform">Publish</button>    
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block jsfiles %}
+
+    <script type="text/javascript" src="{% static 'js/create_featured_post.js' %}"></script><!--Script para manejar eventos de touch sobre los paises.-->
+
+{% endblock jsfiles %}
+
+
+

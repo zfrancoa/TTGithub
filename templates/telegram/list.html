@@ -1,0 +1,102 @@
+
+<!--ACA SE veran la lista de usuarios con quienes mantenemos conversaciones-->
+
+{% extends "base.html" %}<!--HEREDAMOS DE UNA PLATILLA LLAMADA base-->
+
+{% load static %}
+
+
+{% block title %} Chat list  {% endblock %}
+
+
+{% block searchform %}
+{% endblock searchform %}
+
+
+{% block cssfiles %}
+
+<link rel="stylesheet" href="{% static 'css/header.css' %}" type="text/css" />
+
+{% endblock cssfiles %} 
+
+
+{% block content %}
+
+
+    <div class="fixed-top d-flex flex-row justify-content-start border-bottom">
+                            
+        <div class="p-2">
+            <a href="{% url 'home' %}" class="link_icons">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                </svg>
+            </a>
+        </div>
+
+
+        <div class="p-2 ml-5" style="color: black; font-size: 20px;">
+            Messages
+        </div>
+        
+
+    </div>
+
+    <br><br>
+
+    {% if users_list %}<!--ENTRA SOLO SI HAY USUARIOS QUE RECOMENDAR-->
+       
+        {% for item in users_list %}<!--Recorremos los usuarios que nos recomiendan para seguir-->   
+        
+            <div class="background_block w-100 mt-4">
+                <a href="{% url 'chat' item.username %}" class="link_icons">
+                    <div class=" w-100">
+                        <div class="d-flex flex-row justify-content-between">
+                            <div class="d-flex flex-row justify-content-start p-2">
+                                <div class="">
+                                    <img src="{{ item.profile.photo.url }}" class="rounded-circle" width="45" height="45">  
+                                </div>
+                                <div class="block_message_introduce ml-3 mt-2">
+                                    <span id="span_name">{{item}}</span>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                </a>
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <h6><i>There aren't conversations/i></h6>
+
+
+    {% endif %}
+    
+
+    <!--TENEMOS LA CANTIDAD DE MENSAJES SIN LEER DE CADA USUARIO Y LOS TENEMOS ORDENADOS-->
+    {{ count_unread|json_script:"array" }}
+
+{% endblock %}
+
+
+
+{% block jsfiles %}
+
+
+    <script type="text/javascript" src="{% static 'js/chat_list_add_count_message_unread.js' %}"></script><!--Script para poner en html la cantidad de mensajes sin leer de cada user-->
+
+
+{% endblock jsfiles %}
+
+
+
+
+
+
+
+
+
+
+
